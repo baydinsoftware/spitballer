@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<title>Log in</title>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+		<meta name="author" content="Davis Hunt">
+		<style>
+			body {
+				background: #393a58;
+				margin: 0px;
+				padding: 0;
+				font-family: Ubuntu;
+				color:white;
+			}
+			a {
+				color:white;
+			}
+			input[type=text] {
+				width: 300px;
+				font-size:18px;
+			}
+			input[type=password] {
+				width: 300px;
+				font-size:18px;
+			}
+			input[type=submit] {
+				width: 300px;
+				font-size:16px;
+				border:none;
+				height:30px;
+			}
+			.ano {
+				text-decoration: none;
+			}
+			#title {
+				margin: 10px auto;
+				font-size: 49px;
+				color: white;
+			}
+			#input {
+				margin-bottom:10px;
+			}
+			#spitball {
+				width: 500px;
+				font-size: 18px;
+			}
+			#spitter {
+				width: 100px;
+				border:none;
+				background: #1a1a2b;
+				height: 30px;
+				border-radius: 3px;
+				color: white;
+				font-weight: bold;
+				cursor:pointer;
+			}
+			#spitter:hover {
+				background:#464674; 
+			}
+			#login {
+				margin-top:10%;
+				height: 200px;
+				width: 400px;
+			}
+			.contentpane {
+				padding: 10px;
+				width: 610px;
+				background: none;
+				border-radius: 5px;
+				margin-bottom:10px;
+			}
+			.text {
+				position:relative;
+				padding:5px;
+				width:590px;
+				color:#222222;
+				font-size: 28px;
+				color: white;				
+			}
+			.info {
+				width:600px;
+				position:relative;
+				background: #1a1a2b;
+				height:30px;
+				padding: 2px 7px 2px 7px;
+			}
+			.user {
+				position:absolute;
+				left:8px;
+			}
+			.name {
+				position:relative;
+				color:white;
+				font-size:12px;
+				top:-6px;
+			}
+			.date {
+				position:absolute;
+				color:white;
+				font-size:10px;
+				top:10px;
+				right:10px;
+			}
+			.line {
+				display:inline-block;
+			}
+		</style>	
+	</head>
+
+	<body>
+		<div id="container" align="center">
+			<div id="header">
+				
+			</div>
+			<div id="title">
+				<b>SpitBaller</b>
+			</div>
+			<div id="login">
+				{{ state }}
+				<form action="/login/" method="post">
+					{% csrf_token %}
+					<input type="hidden" name="next" value="/demo/" />
+
+					<input type="text" name="username" value="{{ username }}" placeholder="Username"/><br />
+
+					<input type="password" name="password" value="" placeholder="Password"/><br />
+
+					<input type="submit" value="Log In" />
+				</form>
+			</div>	
+		</div>
+	</body>
+</html>

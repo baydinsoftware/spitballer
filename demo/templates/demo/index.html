@@ -1,0 +1,339 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<title>Spitballer</title>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+		<meta name="author" content="Davis Hunt">
+		<style>
+			body {
+				background: #393a58;
+				margin: 0px;
+				padding: 0;
+				font-family: Ubuntu;
+				color:white;
+			}
+			a {
+				color:white;
+			}
+			.ano {
+				text-decoration: none;
+			}
+			#title {
+				margin: 10px auto;
+				font-size: 49px;
+				color: white;
+			}
+			#input {
+				margin-bottom:10px;
+			}
+			#spitball {
+				width: 500px;
+				font-size: 18px;
+			}
+			
+			#spitter {
+				width: 100px;
+				border:none;
+				background: #1a1a2b;
+				height: 30px;
+				border-radius: 3px;
+				color: white;
+				font-weight: bold;
+				cursor:pointer;
+			}
+			#spitter:hover {
+				background:#464674; 
+			}
+			.contentpane {
+				padding: 10px;
+				width: 610px;
+				background: none;
+				border-radius: 5px;
+				margin-bottom:10px;
+			}
+			.text {
+				position:relative;
+				padding:5px;
+				width:590px;
+				color:#222222;
+				font-size: 28px;
+				color: white;				
+			}
+			.info {
+				width:600px;
+				position:relative;
+				background: #1a1a2b;
+				height:30px;
+				padding: 2px 7px 2px 7px;
+			}
+			.comment {
+				padding: 4px;
+				margin-top: 1px;
+				width: 550px;
+				background:#22223b;
+			}
+			.commentbox {
+				padding:5px;
+				background:#22223b;
+			}
+			.commbutt {
+				margin-left:10px;
+				border:none;
+				font-size:10px;
+				cursor:pointer;
+			}
+			.commentinfo {
+				position:relative;
+				height:15px;
+			}
+			.commenttext {
+				font-size: 13px;
+			}
+			.commentname {
+				position:relative;
+				font-size:9px;
+				top:-2px;
+			}
+			.commentuser {
+				position:absolute;
+				left:0px;
+			}
+			.commentdate {
+				position:absolute;
+				font-size:9px;
+				top:5px;
+				right:10px;		
+			}
+			.user {
+				position:absolute;
+				left:8px;
+			}
+			.name {
+				position:relative;
+				color:white;
+				font-size:12px;
+				top:-6px;
+			}
+			.date {
+				position:absolute;
+				color:white;
+				font-size:10px;
+				top:10px;
+				right:7px;
+			}
+			.line {
+				display:inline-block;
+			}
+		</style>	
+	</head>
+
+	<body>
+		{% load url from future %}
+		<div id="container" align="center">
+			<div id="header">
+				Welcome, {{ user }}<br>
+				<a href='logout'>Logout</a>
+			</div>
+			<div id="title">
+				<b>SpitBaller</b>
+			</div>
+			<div id="input">
+				<input type="text" id="spitball"  name="spitball" placeholder="Enter Message"/>
+				<input type="button" id="spitter" name="spitter" value="Spit It"/>
+			</div>
+			
+			<div id="content">
+				{% if latest_post_list %}
+					{% for post in latest_post_list %}
+						<div class="contentpane">		
+							<a class="ano" href='{% url 'demo:detail' post.id %}'>	
+								<div class="text" align="left">
+									{{post.text}}
+								</div>
+							</a>
+							<div class="info">
+								<div class="line user">
+									{% if post.user.username == 'baydin' %}
+										<img src="" class="line" height="20px" width="20px" style="margin-top:5px;background:red;"/>
+									{% elif post.user.username == 'davis' %}
+										<img src="" class="line" height="20px" width="20px" style="margin-top:5px;background:green;"/>
+									{% endif %}
+									<div class="line name">
+										<b><a href='{% url 'demo:user' post.user %}'>{{post.user.username}}</a></b>
+									</div>
+								</div>
+								<div class="line date">
+									{{post.date}}
+									<input type="button" class="commbutt commpeek" value="Comment"/>
+								</div>
+							</div>
+							<div class="commentbox line" style="display:none">
+								<input type="hidden" name="whichpost" value="{{ post.id }}"/>
+								<input type="text" name="commenttext" placeholder="Enter Comment Here..."/>
+								<input type="button" class="commbutt commenter" value="Submit"/>			
+							</div>
+							<div id="commentpane{{ post.id }}">
+							{% if comment_list %}
+							{% for comment in comment_list %}
+								{% if post.id == comment.post_id %}
+								<div class="comment">
+									<div class="commenttext" align="left">
+										{{ comment.text }}
+									</div>
+									<div class="commentinfo">
+										<div class="line commentuser">
+											{% if comment.user.username == 'baydin' %}
+											<img src="" class="line" height="10px" width="10px" style="margin-top:5px;background:red;"/>
+											{% elif comment.user.username == 'davis' %}
+											<img src="" class="line" height="10px" width="10px" style="margin-top:5px;background:green;"/>
+											{% endif %}
+											<div class="line commentname">
+												<b><a href='{% url 'demo:user' comment.user %}'>{{comment.user.username}}</a></b>
+											</div>
+										</div>
+										<div class="line commentdate">
+											{{comment.date}}
+										</div>
+									</div>
+								</div>
+								{% endif %}
+							{% endfor %}
+							{% endif %}
+							</div>
+						</div>
+					{% endfor %}
+				{% endif %}
+			</div>	
+		</div>
+		<script src='http://code.jquery.com/jquery-1.8.3.js'></script>
+		<script>
+			function addPost (text) {
+
+				$.ajax ({
+					dataType: 'json',
+					url: 'post/add',
+					data: {text : text},
+					success: function (json) {
+						if (json['success']) {
+							var html = json['html'];
+							var content = $('#content');
+							content.prepend(html);
+						
+							content.find('.commbutt').first().click(function (){
+								var showpanel = $(this).parent().parent().next();
+								$(showpanel).toggle();
+							});
+
+							content.find(".commenter").first().click(function () {
+								var siblings = $(this).prevAll();
+					
+								addComment (siblings.first().val(), siblings.last().val());
+					
+								siblings.first().val('');
+								$(this).parent().hide();
+							});
+						}
+						else {
+							alert ("There was an error. Please Try Again.");
+						}
+					}
+				});	
+	
+			}
+
+			function addComment(text, postid) {
+
+				$.ajax ({
+					dataType: 'json',
+					url: 'post/' + postid + '/comment/add',
+					data: {text : text, postid : postid},
+					success: function (json) {
+						if (json['success']) {
+							var html = json['html'];
+							var commbox = '#commentpane' + postid;
+							$(commbox).append(html);
+						}
+						else {
+							alert ("There was an error. Please Try Again.");
+						}
+					}
+				});
+
+			}
+			/*
+			function addPost (text) {
+				$.getJSON("post/add/", { text:text }, function (json) {
+					if (json['success']) {
+						var html = json['html'];
+						var content = $('#content');
+						content.prepend(html);
+						
+						content.find('.commpeek').first().click(function (){
+							var showpanel = $(this).parent().parent().next();
+							$(showpanel).toggle();
+						});
+
+						content.find(".commenter").first().click(function () {
+							var siblings = $(this).prevAll();
+					
+							addComment (siblings.first().val(), siblings.last().val());
+					
+							siblings.first().val('');
+							$(this).parent().hide();
+						});
+					}
+					else {
+						alert ("There was an error. Please Try Again.");
+					}
+				});	
+			}
+
+			function addComment(text, postid) {
+				$.getJSON('post/' + postid + '/comment/add', { text:text, postid:postid }, function (json) {
+					if (json['success']) {
+						var html = json['html'];
+						var commbox = '#commentpane' + postid;
+						$(commbox).append(html);
+					}
+					else {
+						alert ("There was an error. Please Try Again.");
+					}
+				});
+			}*/
+
+			$(document).ready(function () {
+
+				// Adds click handler to spitter button (the posting function)
+				$("#spitter").click(function () {
+
+					addPost ($('#spitball').val());
+
+					$('#spitball').val('');
+				});	
+
+				
+				$('input[type=button].commpeek').click(function (){
+					var showpanel = $(this).parent().parent().next();
+					$(showpanel).toggle();
+				});
+	
+				// Add click handlers to all commneter buttons (the ones that send AJAX requests)
+				$(".commenter").click(function () {
+					
+					// Gets all the siblings of the button being pressed
+					var siblings = $(this).prevAll();
+					
+					// The first sibling is the commenttext value
+					// The last sibling is the post_id the comment is associated with
+					addComment (siblings.first().val(), siblings.last().val());
+					
+					// Empties the comment input text box
+					siblings.first().val('');
+
+					// Hides the whole commenting apparatus
+					$(this).parent().hide();
+				});
+	
+			});
+		</script>
+	</body>

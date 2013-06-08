@@ -1,0 +1,31 @@
+<div class="contentpane">		
+	<a class="ano" href='{% url 'demo:detail' post.id %}'>	
+		<div class="text" align="left">
+			{{post.text}}
+		</div>
+	</a>
+	<div class="info">
+		<div class="line user">
+			{% if post.user.username == 'baydin' %}
+				<img src="" class="line" height="20px" width="20px" style="margin-top:5px;background:red;"/>
+			{% elif post.user.username == 'davis' %}
+				<img src="" class="line" height="20px" width="20px" style="margin-top:5px;background:green;"/>
+			{% endif %}
+			<div class="line name">
+				<b><a href='{% url 'demo:user' post.user %}'>{{post.user.username}}</a></b>
+			</div>
+		</div>
+		<div class="line date">
+			{{post.date}}
+			<input type="button" class="commbutt commpeek" value="Comment"/>
+		</div>
+	</div>
+	<div class="commentbox line" style="display:none">
+		<input type="hidden" name="whichpost" value="{{ post.id }}"/>
+		<input type="text" name="commenttext" placeholder="Enter Comment Here..."/>
+		<input type="button" class="commbutt commenter" value="Submit"/>			
+	</div>
+	<div id="commentpane{{ post.id }}">
+
+	</div>
+</div>

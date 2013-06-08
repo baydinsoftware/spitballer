@@ -1,0 +1,21 @@
+{% load url from future %}
+<div class="comment">
+	<div class="commenttext" align="left">
+		{{ comment.text }}
+	</div>
+	<div class="commentinfo">
+		<div class="line commentuser">
+			{% if comment.user.username == 'baydin' %}
+			<img src="" class="line" height="10px" width="10px" style="margin-top:5px;background:red;"/>
+			{% elif comment.user.username == 'davis' %}
+			<img src="" class="line" height="10px" width="10px" style="margin-top:5px;background:green;"/>
+			{% endif %}
+			<div class="line commentname">
+				<b><a href='{% url 'demo:user' comment.user.id %}'>{{comment.user.username}}</a></b>
+			</div>
+		</div>
+		<div class="line commentdate">
+			{{comment.date}}
+		</div>
+	</div>
+</div>
